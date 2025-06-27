@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NutriWise 알고리즘 개요</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-main {
+            flex: 1;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .back-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Navigation */
+        nav {
+            background: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #2a5298;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #1e3c72;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 60px;
+        }
+
+        /* Category Overview */
+        .category-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 80px;
+        }
+
+        .category-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .category-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .category-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: #2a5298;
+        }
+
+        .category-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #1e3c72;
+        }
+
+        .category-description {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .algorithm-count {
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        /* Algorithm Grid */
+        .algorithm-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 60px;
+        }
+
+        .algorithm-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border-left: 4px solid #2a5298;
+        }
+
+        .algorithm-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+
+        .algorithm-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: #2a5298;
+        }
+
+        .algorithm-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #1e3c72;
+        }
+
+        .algorithm-summary {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .algorithm-status {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-patent {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .status-paper {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+
+        .status-development {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+
+        .status-registered {
+            background: #e8f5e8;
+            color: #2e7d32;
+        }
+
+        /* Category sections */
+        .category-section {
+            margin-bottom: 60px;
+        }
+
+        .category-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .category-header h3 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1e3c72;
+            margin-bottom: 10px;
+        }
+
+        .category-header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        /* Special cards */
+        .featured-card {
+            border-left: 4px solid #e74c3c;
+        }
+
+        .featured-card .algorithm-icon {
+            color: #e74c3c;
+        }
+
+        .ai-card {
+            border-left: 4px solid #9b59b6;
+        }
+
+        .ai-card .algorithm-icon {
+            color: #9b59b6;
+        }
+
+        /* Footer */
+        footer {
+            background: #1a1a1a;
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        /* Modal for coming soon */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 15% auto;
+            padding: 30px;
+            border-radius: 20px;
+            width: 400px;
+            text-align: center;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: black;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .category-overview {
+                grid-template-columns: 1fr;
+            }
+            
+            .algorithm-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .logo {
+                font-size: 2rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div></div> <!-- Left spacer -->
+                <div class="header-main">
+                    <h1 class="logo">NutriWise 알고리즘</h1>
+                    <p class="tagline">AI 기술로 구현하는 맞춤형 식이 솔루션</p>
+                </div>
+                <button class="back-btn" onclick="window.location.href='file:///Users/heejeong/Library/CloudStorage/OneDrive-%E1%84%80%E1%85%A2%E1%84%8B%E1%85%B5%E1%86%AB/Heejeong/%E1%84%89%E1%85%B5%E1%86%A8%E1%84%8B%E1%85%B4%E1%84%92%E1%85%A1%E1%86%A8%E1%84%8B%E1%85%B2%E1%84%8C%E1%85%A5%E1%86%AB%E1%84%8E%E1%85%A6%E1%84%89%E1%85%B5%E1%86%AF/%E1%84%80%E1%85%AA%E1%84%8C%E1%85%A6/%E1%84%86%E1%85%A1%E1%86%BD%E1%84%8E%E1%85%AE%E1%86%B7%E1%84%89%E1%85%B5%E1%86%A8%E1%84%8B%E1%85%B5/%23%20%E1%84%86%E1%85%A1%E1%86%BD%E1%84%8E%E1%85%AE%E1%86%B7%E1%84%92%E1%85%A7%E1%86%BC%20%E1%84%89%E1%85%B5%E1%86%A8%E1%84%8B%E1%85%B5%E1%84%89%E1%85%A5%E1%86%AF%E1%84%80%E1%85%A8%20%E1%84%91%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A2%E1%86%BA%E1%84%91%E1%85%A9%E1%86%B7/html/%E1%84%86%E1%85%A1%E1%86%BD%E1%84%8E%E1%85%AE%E1%86%B7%E1%84%92%E1%85%A7%E1%86%BC%E1%84%89%E1%85%B5%E1%86%A8%E1%84%8B%E1%85%B5%E1%84%89%E1%85%A5%E1%86%AF%E1%84%80%E1%85%A8%20%E1%84%91%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A2%E1%86%BA%E1%84%91%E1%85%A9%E1%86%B7_%E1%84%89%E1%85%A9%E1%84%80%E1%85%A2%20%E1%84%91%E1%85%A6%E1%84%8B%E1%85%B5%E1%84%8C%E1%85%B5.html'">
+                    ← 홈으로
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <div class="nav-container">
+                <div class="nav-brand">
+                    <strong>알고리즘 개요</strong>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#evaluation">식이 평가</a></li>
+                    <li><a href="#recommendation">식이 추천</a></li>
+                    <li><a href="#design">식이 설계</a></li>
+                    <li><a href="#education">식이 교육</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <h2 class="section-title">핵심 알고리즘 기술</h2>
+            <p class="section-subtitle">개인맞춤형 식품 서비스를 위한 14가지 AI 알고리즘을 소개합니다</p>
+            
+            <!-- CTA Button Section -->
+            <div style="text-align: center; margin: 40px 0 60px 0;">
+                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 20px; padding: 40px; color: white; margin-bottom: 30px;">
+                    <h3 style="font-size: 1.8rem; font-weight: 700; margin-bottom: 15px;">기업 맞춤형 알고리즘 솔루션</h3>
+                    <p style="font-size: 1.1rem; opacity: 0.9; margin-bottom: 25px;">
+                        귀하의 비즈니스에 최적화된 맞춤형 식이 알고리즘을 개발해드립니다.<br>
+                        전문가 컨설팅부터 실증까지 원스톱 서비스를 제공합니다.
+                    </p>
+                    <a href="file:///Users/heejeong/Library/CloudStorage/OneDrive-%E1%84%80%E1%85%A2%E1%84%8B%E1%85%B5%E1%86%AB/Heejeong/%E1%84%89%E1%85%B5%E1%86%A8%E1%84%8B%E1%85%B4%E1%84%92%E1%85%A1%E1%86%A8%E1%84%8B%E1%85%B2%E1%84%8C%E1%85%A5%E1%86%AB%E1%84%8E%E1%85%A6%E1%84%89%E1%85%B5%E1%86%AF/%E1%84%80%E1%85%AA%E1%84%8C%E1%85%A6/%E1%84%86%E1%85%A1%E1%86%BD%E1%84%8E%E1%85%AE%E1%86%B7%E1%84%89%E1%85%B5%E1%86%A8%E1%84%8B%E1%85%B5/%23%20%E1%84%86%E1%85%A1%E1%86%BD%E1%84%8E%E1%85%AE%E1%86%B7%E1%84%92%E1%85%A7%E1%86%BC%20%E1%84%89%E1%85%B5%E1%86%A8%E1%84%8B%E1%85%B5%E1%84%89%E1%85%A5%E1%86%AF%E1%84%80%E1%85%A8%20%E1%84%91%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A2%E1%86%BA%E1%84%91%E1%85%A9%E1%86%B7/html/%E1%84%80%E1%85%B5%E1%84%8B%E1%85%A5%E1%86%B8%20%E1%84%89%E1%85%A9%E1%86%AF%E1%84%85%E1%85%AE%E1%84%89%E1%85%A7%E1%86%AB%20%E1%84%86%E1%85%A1%E1%86%BD%E1%84%8E%E1%85%AE%E1%86%B7%20%E1%84%80%E1%85%A7%E1%86%AB%E1%84%8C%E1%85%A5%E1%86%A8%20%E1%84%89%E1%85%A1%E1%86%BC%E1%84%83%E1%85%A1%E1%86%B7%20%E1%84%89%E1%85%B5%E1%86%AB%E1%84%8E%E1%85%A5%E1%86%BC.html" 
+                       style="display: inline-block; background: linear-gradient(45deg, #ff6b6b, #ffa500); color: white; padding: 15px 40px; text-decoration: none; border-radius: 50px; font-weight: 700; font-size: 1.1rem; transition: all 0.3s ease; box-shadow: 0 8px 25px rgba(255, 107, 107, 0.3); text-transform: uppercase; letter-spacing: 1px;"
+                       onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 15px 35px rgba(255, 107, 107, 0.4)'"
+                       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 25px rgba(255, 107, 107, 0.3)'">
+                        🚀 기업 솔루션 상담 신청
+                    </a>
+                </div>
+            </div>
+
+            <!-- Category Overview -->
+            <div class="category-overview">
+                <div class="category-card" onclick="scrollToSection('evaluation')">
+                    <div class="category-icon">🔍</div>
+                    <h3 class="category-title">식이 평가</h3>
+                    <p class="category-description">사용자의 식습관과 건강 상태를 분석하여 개인 맞춤형 영양 평가를 제공합니다</p>
+                    <span class="algorithm-count">3개 알고리즘</span>
+                </div>
+                <div class="category-card" onclick="scrollToSection('recommendation')">
+                    <div class="category-icon">🎯</div>
+                    <h3 class="category-title">식이 추천</h3>
+                    <p class="category-description">개인의 선호도와 건강 상태를 고려하여 최적의 식품과 레시피를 추천합니다</p>
+                    <span class="algorithm-count">4개 알고리즘</span>
+                </div>
+                <div class="category-card" onclick="scrollToSection('design')">
+                    <div class="category-icon">🍱</div>
+                    <h3 class="category-title">식이 설계</h3>
+                    <p class="category-description">영양학적 균형과 개인 요구사항을 고려한 맞춤형 식단을 자동으로 설계합니다</p>
+                    <span class="algorithm-count">5개 알고리즘</span>
+                </div>
+                <div class="category-card" onclick="scrollToSection('education')">
+                    <div class="category-icon">📚</div>
+                    <h3 class="category-title">식이 교육</h3>
+                    <p class="category-description">개인 맞춤형 영양 교육과 AI 기반 상담 서비스를 제공합니다</p>
+                    <span class="algorithm-count">2개 알고리즘</span>
+                </div>
+            </div>
+
+            <!-- 식이 평가 알고리즘 -->
+            <div class="category-section" id="evaluation">
+                <div class="category-header">
+                    <h3>🔍 식이 평가 알고리즘</h3>
+                    <p>사용자의 식습관과 건강 데이터를 분석하여 개인화된 영양 평가를 제공합니다</p>
+                </div>
+                <div class="algorithm-grid">
+                    <div class="algorithm-card" onclick="showAlgorithmDetail('user-data-analysis')">
+                        <div class="algorithm-icon">📊</div>
+                        <h4 class="algorithm-title">사용자 데이터 분석 기반 니즈 도출</h4>
+                        <p class="algorithm-summary">
+                            커뮤니티 데이터를 머신러닝으로 분석하여 사용자의 식품 관련 관심사와 니즈를 자동으로 도출합니다.
+                        </p>
+                        <span class="algorithm-status status-paper">논문 게재</span>
+                    </div>
+
+                    <div class="algorithm-card featured-card" onclick="showAlgorithmDetail('llm-food-analysis')">
+                        <div class="algorithm-icon">🥗</div>
+                        <h4 class="algorithm-title">LLM 기반 음식 분류 및 평가</h4>
+                        <p class="algorithm-summary">
+                            대규모 언어모델을 활용해 음식을 분류하고 식이 패턴을 평가하여 질환 위험도를 예측합니다.
+                        </p>
+                        <span class="algorithm-status status-patent">특허 출원 완료</span>
+                    </div>
+
+                    <div class="algorithm-card" onclick="showAlgorithmDetail('weight-management')">
+                        <div class="algorithm-icon">⚖️</div>
+                        <h4 class="algorithm-title">체중 관리자 맞춤 영양 기준 도출</h4>
+                        <p class="algorithm-summary">
+                            개인의 체중 감량 효율을 계산하여 맞춤형 에너지 및 영양소 권장 섭취량을 제공합니다.
+                        </p>
+                        <span class="algorithm-status status-patent">특허 출원 완료</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 식이 추천 알고리즘 -->
+            <div class="category-section" id="recommendation">
+                <div class="category-header">
+                    <h3>🎯 식이 추천 알고리즘</h3>
+                    <p>개인의 선호도와 건강 상태를 고려한 지능형 식품 추천 시스템입니다</p>
+                </div>
+                <div class="algorithm-grid">
+                    <div class="algorithm-card" onclick="showAlgorithmDetail('preference-prediction')">
+                        <div class="algorithm-icon">🌱</div>
+                        <h4 class="algorithm-title">음식 선호도 예측 및 레시피 추천</h4>
+                        <p class="algorithm-summary">
+                            그래프 신경망으로 음식 선호도를 예측하고 보유 식재료를 고려한 맞춤형 레시피를 추천합니다.
+                        </p>
+                        <span class="algorithm-status status-patent">특허 출원 완료</span>
+                    </div>
+
+                    <div class="algorithm-card" onclick="showAlgorithmDetail('vegetarian-filtering')">
+                        <div class="algorithm-icon">🥬</div>
+                        <h4 class="algorithm-title">채식 유형별 섭취 가능 식품 필터링</h4>
+                        <p class="algorithm-summary">
+                            다양한 채식 유형과 동기를 분석하여 개인에게 적합한 채식 식품을 필터링합니다.
+                        </p>
+                        <span class="algorithm-status status-registered">특허 등록</span>
+                    </div>
+
+                    <div class="algorithm-card" onclick="showAlgorithmDetail('obesity-nutrition')">
+                        <div class="algorithm-icon">⚕️</div>
+                        <h4 class="algorithm-title">비만 유형별 식품 영양 평가 및 추천</h4>
+                        <p class="algorithm-summary">
+                            비만 유형별 맞춤 영양 프로파일링을 통해 개인화된 식품 영양 점수를 제공합니다.
+                        </p>
+                        <span class="algorithm-status status-patent">특허 출원 완료</span>
+                    </div>
+
+                    <div class="algorithm-card ai-card" onclick="showAlgorithmDetail('kidney-recipe')">
+                        <div class="algorithm-icon">🧠</div>
+                        <h4 class="algorithm-title">신장 질환 유형별 대체 레시피 추천</h4>
+                        <p class="algorithm-summary">
+                            GNN 모델로 신장 질환자의 식재료 제한사항을 고려한 개인 맞춤 대체 레시피를 생성합니다.
+                        </p>
+                        <span class="algorithm-status status-patent">특허 출원 준비</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 식이 설계 알고리즘 -->
+            <div class="category-section" id="design">
+                <div class="category-header">
+                    <h3>🍱 식이 설계 알고리즘</h3>
+                    <p>영양학적 균형과 개인 요구사항을 모두 만족하는 지능형 식단 설계 시스템입니다</p>
+                </div>
+                <div class="algorithm-grid">
+                    <div class="algorithm-card featured-card" onclick="showAlgorithmDetail('lunchbox-design')">
+                        <div class="algorithm-icon">🏥</div>
+                        <h4 class="algorithm-title">맞춤형 도시락 설계</h4>
+                        <p class="algorithm-summary">
+                            다양한 건강 조건과 용기 규격을 고려하여 맞춤형 도시락 메뉴를 자동으로 설계합니다.
+                        </p>
+                        <span class="algorithm-status status-patent">특허 출원 중</span>
+                    </div>
+
+                    <div class="algorithm-card" onclick="showAlgorithmDetail('subscription-design')">
+                        <div class="algorithm-icon">📅</div>
+                        <h4 class="algorithm-title">구독형 식단 임상 실험 설계</h4>
+                        <p class="algorithm-summary">
+                            식단 선호도 기반 구독 서비스의 건강 개선 효과를 검증하는 임상 실험을 설계합니다.
+                        </p>
+                        <span class="algorithm-status status-paper">논문 투고 준비</span>
+                    </div>
+
+                    <div class="algorithm-card" onclick="showAlgorithmDetail('optimization')">
+                        <div class="algorithm-icon">⚖️</div>
+                        <h4 class="algorithm-title">식단 가격·영양·다양성 최적화</h4>
+                        <p class="algorithm-summary">
+                            유전 알고리즘으로 가격, 영양 균형, 식품 조합, 메뉴 다양성을 동시에 최적화합니다.
+                        </p>
+                        <span class="algorithm-status status-patent">특허 출원 완료</span>
+                    </div>
+
+                    <div class="algorithm-card" onclick="showAlgorithmDetail('elderly-design')">
+                        <div class="algorithm-icon">👵</div>
+                        <h4 class="algorithm-title">고령자 질환 및 저작단계 기반 식단 설계</h4>
+                        <p class="algorithm-summary">
+                            고령자의 저작 능력과 질환을 고려한 개인 맞춤 5일치 식단을 자동으로 생성합니다.
+                        </p>
+                        <span class="algorithm-status status-development">알고리즘 개발중</span>
+                    </div>
+
+                    <div class="algorithm-card" onclick="showAlgorithmDetail('meal-recommendation')">
+                        <div class="algorithm-icon">🍽️</div>
+                        <h4 class="algorithm-title">사용자 맞춤 식단 제공</h4>
+                        <p class="algorithm-summary">
+                            개인의 건강 데이터와 선호도를 종합하여 최적화된 맞춤형 식단을 제공합니다.
+                        </p>
+                        <span class="algorithm-status status-patent">특허 출원 완료</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 식이 교육 알고리즘 -->
+            <div class="category-section" id="education">
+                <div class="category-header">
+                    <h3>📚 식이 교육 알고리즘</h3>
+                    <p>개인화된 영양 교육과 AI 기반 맞춤형 상담 서비스를 제공합니다</p>
+                </div>
+                <div class="algorithm-grid">
+                    <div class="algorithm-card" onclick="showAlgorithmDetail('taste-evaluation')">
+                        <div class="algorithm-icon">👅</div>
+                        <h4 class="algorithm-title">맛 선호도 및 민감도 평가</h4>
+                        <p class="algorithm-summary">
+                            개인의 미각 프로필을 과학적으로 분석하여 맞춤형 영양 교육 가이드를 제공합니다.
+                        </p>
+                        <span class="algorithm-status status-development">실증 완료</span>
+                    </div>
+
+                    <div class="algorithm-card ai-card" onclick="showAlgorithmDetail('diet-chatbot')">
+                        <div class="algorithm-icon">🤖</div>
+                        <h4 class="algorithm-title">RAG 활용 식이 관리 챗봇</h4>
+                        <p class="algorithm-summary">
+                            공인된 의료 가이드라인을 기반으로 신장질환자 맞춤형 식이 상담을 제공하는 AI 챗봇입니다.
+                        </p>
+                        <span class="algorithm-status status-patent">특허 출원 준비</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 NutriWise. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Modal -->
+    <div id="algorithmModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>상세 페이지 준비중</h3>
+            <p>해당 알고리즘의 상세 페이지를 준비중입니다.<br>곧 제공될 예정입니다.</p>
+        </div>
+    </div>
+
+    <script>
+        // 섹션으로 스크롤하는 함수
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+
+        // 알고리즘 상세 페이지 표시 (현재는 모달로 대체)
+        function showAlgorithmDetail(algorithmId) {
+            if (algorithmId === 'optimization') {
+                window.location.href = 'file:///Users/heejeong/Library/CloudStorage/OneDrive-%E1%84%80%E1%85%A2%E1%84%8B%E1%85%B5%E1%86%AB/Heejeong/%E1%84%89%E1%85%B5%E1%86%A8%E1%84%8B%E1%85%B4%E1%84%92%E1%85%A1%E1%86%A8%E1%84%8B%E1%85%B2%E1%84%8C%E1%85%A5%E1%86%AB%E1%84%8E%E1%85%A6%E1%84%89%E1%85%B5%E1%86%AF/%E1%84%80%E1%85%AA%E1%84%8C%E1%85%A6/%E1%84%86%E1%85%A1%E1%86%BD%E1%84%8E%E1%85%AE%E1%86%B7%E1%84%89%E1%85%B5%E1%86%A8%E1%84%8B%E1%85%B5/%23%20%E1%84%86%E1%85%A1%E1%86%BD%E1%84%8E%E1%85%AE%E1%86%B7%E1%84%92%E1%85%A7%E1%86%BC%20%E1%84%89%E1%85%B5%E1%86%A8%E1%84%8B%E1%85%B5%E1%84%89%E1%85%A5%E1%86%AF%E1%84%80%E1%85%A8%20%E1%84%91%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A2%E1%86%BA%E1%84%91%E1%85%A9%E1%86%B7/html/diet_optimization_detail.html';
+                return;
+            }
+            const modal = document.getElementById('algorithmModal');
+            modal.style.display = 'block';
+        }
+
+        // 모달 관련 이벤트
+        const modal = document.getElementById('algorithmModal');
+        const closeBtn = document.getElementsByClassName('close')[0];
+
+        closeBtn.onclick = function() {
+            modal.style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // 네비게이션 링크에 스무스 스크롤 적용
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>

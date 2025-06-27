@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>식단 가격·영양·다양성 최적화 - NutriWise</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%);
+            color: white;
+            padding: 40px 0;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .back-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: background 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .header-info {
+            flex: 1;
+        }
+
+        .algorithm-category {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 5px;
+        }
+
+        .algorithm-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .algorithm-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .algorithm-icon {
+            font-size: 4rem;
+            opacity: 0.8;
+        }
+
+        /* Navigation */
+        nav {
+            background: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: #2a5298;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 60px 0;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+        }
+
+        .main-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .sidebar-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: #1e3c72;
+        }
+
+        .section-content {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .feature-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            border-left: 4px solid #2a5298;
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: #2a5298;
+        }
+
+        .feature-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #1e3c72;
+        }
+
+        .feature-description {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+        }
+
+        .calculation-method {
+            background: #e8f4fd;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            color: #1565c0;
+            border-left: 3px solid #1976d2;
+        }
+
+        /* Process Flow */
+        .process-flow {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .process-step {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .process-step:not(:last-child):after {
+            content: "→";
+            position: absolute;
+            right: -25px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+            color: #2a5298;
+            font-weight: bold;
+        }
+
+        .step-number {
+            background: #2a5298;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .step-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .step-description {
+            font-size: 0.8rem;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        /* Algorithm Diagram */
+        .algorithm-diagram {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .diagram-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #1e3c72;
+        }
+
+        .objectives-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .objective-box {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .objective-icon {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        .objective-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        /* Sidebar Cards */
+        .status-card {
+            border-left: 4px solid #2a5298;
+        }
+
+        .status-badge {
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .info-value {
+            color: #666;
+        }
+
+        /* Applications */
+        .application-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .application-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            border-left: 4px solid #2a5298;
+        }
+
+        .application-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #1e3c72;
+        }
+
+        .application-description {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        /* Technical Details */
+        .tech-details {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
+        }
+
+        .tech-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #1e3c72;
+        }
+
+        .tech-list {
+            list-style: none;
+        }
+
+        .tech-list li {
+            padding: 8px 0;
+            color: #555;
+        }
+
+        .tech-list li strong {
+            color: #2a5298;
+        }
+
+        /* Warning Box */
+        .warning-box {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 30px 0;
+        }
+
+        .warning-box h4 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        .warning-box ul {
+            color: #856404;
+            margin-left: 20px;
+        }
+
+        /* Results Guide */
+        .results-guide {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .result-card {
+            background: #f0fdf4;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid #2a5298;
+        }
+
+        .result-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #1e3c72;
+        }
+
+        .result-description {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+        }
+
+        .result-detail {
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .objectives-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .process-step:not(:last-child):after {
+                display: none;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .algorithm-title {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <button class="back-btn" onclick="window.location.href='file:///Users/heejeong/Library/CloudStorage/OneDrive-%E1%84%80%E1%85%A2%E1%84%8B%E1%85%B5%E1%86%AB/Heejeong/%E1%84%89%E1%85%B5%E1%86%A8%E1%84%8B%E1%85%B4%E1%84%92%E1%85%A1%E1%86%A8%E1%84%8B%E1%85%B2%E1%84%8C%E1%85%A5%E1%86%AB%E1%84%8E%E1%85%A6%E1%84%89%E1%85%B5%E1%86%AF/%E1%84%80%E1%85%AA%E1%84%8C%E1%85%A6/%E1%84%86%E1%85%A1%E1%86%BD%E1%84%8E%E1%85%AE%E1%86%B7%E1%84%89%E1%85%B5%E1%86%A8%E1%84%8B%E1%85%B5/%23%20%E1%84%86%E1%85%A1%E1%86%BD%E1%84%8E%E1%85%AE%E1%86%B7%E1%84%92%E1%85%A7%E1%86%BC%20%E1%84%89%E1%85%B5%E1%86%A8%E1%84%8B%E1%85%B5%E1%84%89%E1%85%A5%E1%86%AF%E1%84%80%E1%85%A8%20%E1%84%91%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A2%E1%86%BA%E1%84%91%E1%85%A9%E1%86%B7/html/%E1%84%8B%E1%85%A1%E1%86%AF%E1%84%80%E1%85%A9%E1%84%85%E1%85%B5%E1%84%8C%E1%85%B3%E1%86%B7%20%E1%84%89%E1%85%A9%E1%84%80%E1%85%A2%20%E1%84%91%E1%85%A6%E1%84%8B%E1%85%B5%E1%84%8C%E1%85%B5.html'">←</button>
+                <div class="header-info">
+                    <div class="algorithm-category">식이 설계 알고리즘</div>
+                    <h1 class="algorithm-title">식단 가격·영양·다양성 최적화</h1>
+                    <p class="algorithm-subtitle">다목적 최적화 알고리즘을 활용한 지능형 식단 설계 시스템</p>
+                </div>
+                <div class="algorithm-icon">⚖️</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <ul class="nav-links">
+                <li><a href="#overview" class="active">개요</a></li>
+                <li><a href="#objectives">최적화 목표</a></li>
+                <li><a href="#process">작동 원리</a></li>
+                <li><a href="#applications">활용 분야</a></li>
+                <li><a href="#technical">기술 상세</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div class="content-grid">
+                <!-- Main Section -->
+                <div class="main-section">
+                    <!-- 개요 -->
+                    <section id="overview">
+                        <h2 class="section-title">알고리즘 개요</h2>
+                        <div class="section-content">
+                            <p>
+                                <strong>식단 가격·영양·다양성 최적화 알고리즘</strong>은 영양가 설계한 초기 식단표를 
+                                <strong>SPEA2 유전 알고리즘</strong>을 활용하여 가격, 영양 균형, 식품 조합, 메뉴 다양성 등 
+                                <strong>여러 목표를 동시에 최적화</strong>하여 개선된 식단을 제공하는 혁신적인 기술입니다.
+                            </p>
+                            <p>
+                                이 알고리즘은 단순히 하나의 목표만을 추구하는 것이 아니라, 
+                                <strong>다목적 최적화(Multi-objective Optimization)</strong> 기법을 통해 
+                                상충할 수 있는 여러 목표 간의 균형점을 찾아 실용적이고 지속가능한 식단을 제안합니다.
+                            </p>
+                        </div>
+
+                        <!-- Algorithm Diagram -->
+                        <div class="algorithm-diagram">
+                            <div class="diagram-title">4가지 최적화 목표</div>
+                            <div class="objectives-grid">
+                                <div class="objective-box">
+                                    <div class="objective-icon">🥗</div>
+                                    <div class="objective-name">영양 최적화</div>
+                                </div>
+                                <div class="objective-box">
+                                    <div class="objective-icon">💰</div>
+                                    <div class="objective-name">비용 효율성</div>
+                                </div>
+                                <div class="objective-box">
+                                    <div class="objective-icon">👏</div>
+                                    <div class="objective-name">메뉴 조화</div>
+                                </div>
+                                <div class="objective-box">
+                                    <div class="objective-icon">💡</div>
+                                    <div class="objective-name">식단 다양성</div>
+                                </div>
+                            </div>
+                            <p style="color: #666; font-size: 0.9rem; margin-top: 15px;">
+                                SPEA2 유전 알고리즘이 4가지 목표를 동시에 고려하여 최적의 균형점을 찾아냅니다.
+                            </p>
+                        </div>
+                    </section>
+
+                    <!-- 최적화 목표 -->
+                    <section id="objectives">
+                        <h2 class="section-title">4가지 최적화 목표</h2>
+                        
+                        <div class="features-grid">
+                            <div class="feature-card">
+                                <div class="feature-icon">🥗</div>
+                                <div class="feature-title">영양 최적화</div>
+                                <div class="feature-description">
+                                    설정된 영양소 기준에 맞춰 균형잡힌 식단을 구성하여 건강한 영양 섭취를 보장합니다.
+                                </div>
+                                <div class="calculation-method">
+                                    <strong>계산 방법:</strong> 식단 내 영양소 함량을 권장 범위와 비교하여 기준값 대비 편차에 따른 패널티를 적용해 100점 만점으로 계산
+                                </div>
+                            </div>
+
+                            <div class="feature-card">
+                                <div class="feature-icon">💰</div>
+                                <div class="feature-title">비용 효율성</div>
+                                <div class="feature-description">
+                                    식재료 비용을 최소화하면서도 영양 기준을 만족하는 경제적인 식단을 제안합니다.
+                                </div>
+                                <div class="calculation-method">
+                                    <strong>계산 방법:</strong> 데이터베이스의 최저/최고 비용 범위 내에서 현재 식단의 상대적 위치를 100점 만점으로 계산
+                                </div>
+                            </div>
+
+                            <div class="feature-card">
+                                <div class="feature-icon">👏</div>
+                                <div class="feature-title">메뉴 조화</div>
+                                <div class="feature-description">
+                                    과거 데이터를 기반으로 잘 어울리는 메뉴 조합을 찾아 맛있고 조화로운 식단을 구성합니다.
+                                </div>
+                                <div class="calculation-method">
+                                    <strong>계산 방법:</strong> 데이터베이스에서 함께 제공된 메뉴의 조합 빈도를 매트릭스로 구성하여 평균 조화도를 100점 만점으로 계산
+                                </div>
+                            </div>
+
+                            <div class="feature-card">
+                                <div class="feature-icon">💡</div>
+                                <div class="feature-title">식단 다양성</div>
+                                <div class="feature-description">
+                                    메뉴의 다양성을 높여 식사의 즐거움을 제공하고 영양소 섭취의 균형을 맞춥니다.
+                                </div>
+                                <div class="calculation-method">
+                                    <strong>계산 방법:</strong> Simpson 다양성 지수를 활용하여 메뉴의 균등한 분포 정도를 100점 만점으로 계산
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 작동 원리 -->
+                    <section id="process">
+                        <h2 class="section-title">작동 원리</h2>
+                        <div class="section-content">
+                            <p>알고리즘은 다음과 같은 7단계 프로세스를 통해 최적화된 식단을 생성합니다:</p>
+                        </div>
+                        
+                        <div class="process-flow">
+                            <div class="process-step">
+                                <div class="step-number">1</div>
+                                <div class="step-title">데이터 입력</div>
+                                <div class="step-description">기존 식단을 Excel 형태로 업로드</div>
+                            </div>
+                            <div class="process-step">
+                                <div class="step-number">2</div>
+                                <div class="step-title">영양소 설정</div>
+                                <div class="step-description">영양소 제한 및 가중치 조정</div>
+                            </div>
+                            <div class="process-step">
+                                <div class="step-number">3</div>
+                                <div class="step-title">초기 분석</div>
+                                <div class="step-description">현재 식단의 4가지 목표별 점수 계산</div>
+                            </div>
+                            <div class="process-step">
+                                <div class="step-number">4</div>
+                                <div class="step-title">SPEA2 실행</div>
+                                <div class="step-description">유전 알고리즘으로 다목적 최적화</div>
+                            </div>
+                            <div class="process-step">
+                                <div class="step-number">5</div>
+                                <div class="step-title">해집합 도출</div>
+                                <div class="step-description">파레토 최적해 집합 생성</div>
+                            </div>
+                            <div class="process-step">
+                                <div class="step-number">6</div>
+                                <div class="step-title">솔루션 선별</div>
+                                <div class="step-description">상위 5개 최적 식단 선택</div>
+                            </div>
+                            <div class="process-step">
+                                <div class="step-number">7</div>
+                                <div class="step-title">결과 분석</div>
+                                <div class="step-description">개선율 및 변경사항 분석</div>
+                            </div>
+                        </div>
+
+                        <!-- 기술 상세 -->
+                        <div class="tech-details">
+                            <h3 class="tech-title">핵심 기술 스펙</h3>
+                            <ul class="tech-list">
+                                <li><strong>최적화 알고리즘:</strong> SPEA2 (Strength Pareto Evolutionary Algorithm 2)</li>
+                                <li><strong>목표 함수:</strong> 4개 (영양, 비용, 조화, 다양성)</li>
+                                <li><strong>처리 시간:</strong> 30초~2분 (식단 규모에 따라)</li>
+                                <li><strong>최적해 개수:</strong> 최대 5개 파레토 최적 식단 제공</li>
+                                <li><strong>개선율:</strong> 평균 20-40% 향상 (목표별 차이)</li>
+                                <li><strong>데이터 형식:</strong> Excel (.xlsx) 지원</li>
+                            </ul>
+                        </div>
+
+                        <!-- 주의사항 -->
+                        <div class="warning-box">
+                            <h4>⚠️ 사용시 주의사항</h4>
+                            <ul>
+                                <li>Excel 파일은 정해진 형식(Day, MealType, Menus)을 반드시 준수해야 합니다</li>
+                                <li>메뉴명은 데이터베이스에 등록된 메뉴와 정확히 일치해야 합니다</li>
+                                <li>영양소 제한을 너무 엄격하게 설정하면 해를 찾지 못할 수 있습니다</li>
+                                <li>최적화 과정 중 브라우저를 새로고침하면 작업이 초기화됩니다</li>
+                            </ul>
+                        </div>
+                    </section>
+
+                    <!-- 활용 분야 -->
+                    <section id="applications">
+                        <h2 class="section-title">활용 분야</h2>
+                        <div class="section-content">
+                            <p>이 알고리즘은 다양한 단체급식 및 식단 관리 분야에서 혁신적인 솔루션을 제공합니다:</p>
+                        </div>
+
+                        <div class="application-grid">
+                            <div class="application-card">
+                                <div class="application-title">급식 서비스 최적화</div>
+                                <div class="application-description">
+                                    학교, 병원, 기업 급식에서 영양사의 식단 설계 업무를 지원하여 효율성과 품질을 동시에 향상
+                                </div>
+                            </div>
+                            <div class="application-card">
+                                <div class="application-title">개인 맞춤형 구독 서비스</div>
+                                <div class="application-description">
+                                    개인의 영양 요구사항과 예산을 고려한 맞춤형 식단 구독 서비스에 적용
+                                </div>
+                            </div>
+                            <div class="application-card">
+                                <div class="application-title">요양원 식단 관리</div>
+                                <div class="application-description">
+                                    고령자의 특수한 영양 요구사항을 고려하면서도 비용 효율적인 식단 운영
+                                </div>
+                            </div>
+                            <div class="application-card">
+                                <div class="application-title">케이터링 사업 최적화</div>
+                                <div class="application-description">
+                                    다양한 고객층의 요구를 만족시키면서 수익성을 극대화하는 메뉴 구성
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 결과 해석 가이드 -->
+                        <h3 style="font-size: 1.5rem; margin: 40px 0 20px 0; color: #1e3c72;">📊 결과 해석 가이드</h3>
+                        <div class="results-guide">
+                            <div class="result-card">
+                                <div class="result-title">🥗 영양 점수</div>
+                                <div class="result-description">
+                                    일일 권장 영양소 기준 대비 얼마나 잘 맞추었는지를 평가합니다. 100점에 가까울수록 이상적입니다.
+                                </div>
+                                <div class="result-detail">
+                                    기준 범위를 벗어날수록 가중치에 따라 패널티가 적용되어 점수가 감소합니다.
+                                </div>
+                            </div>
+                            <div class="result-card">
+                                <div class="result-title">💰 비용 점수</div>
+                                <div class="result-description">
+                                    전체 데이터베이스 대비 비용 효율성을 평가합니다. 높을수록 경제적인 식단입니다.
+                                </div>
+                                <div class="result-detail">
+                                    최저 비용에 가까울수록 높은 점수를 받으며, 100점 만점으로 정규화됩니다.
+                                </div>
+                            </div>
+                            <div class="result-card">
+                                <div class="result-title">👏 조화 점수</div>
+                                <div class="result-description">
+                                    과거 데이터에서 함께 나온 메뉴 조합의 빈도를 기반으로 조화로움을 평가합니다.
+                                </div>
+                                <div class="result-detail">
+                                    자주 함께 제공된 메뉴일수록 높은 조화 점수를 받습니다.
+                                </div>
+                            </div>
+                            <div class="result-card">
+                                <div class="result-title">💡 다양성 점수</div>
+                                <div class="result-description">
+                                    메뉴의 다양성을 Simpson 지수로 계산하여 얼마나 다양한 메뉴로 구성되었는지 평가합니다.
+                                </div>
+                                <div class="result-detail">
+                                    같은 메뉴가 반복될수록 점수가 낮아지고, 다양할수록 높은 점수를 받습니다.
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Sidebar -->
+                <div class="sidebar">
+                    <!-- Status Card -->
+                    <div class="sidebar-card status-card">
+                        <h3 style="margin-bottom: 15px; color: #1e3c72;">개발 현황</h3>
+                        <div class="info-item">
+                            <span class="info-label">개발 단계</span>
+                            <span class="info-value">실용 프로그램 완성</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">특허 상태</span>
+                            <span class="info-value">출원 완료 및 등록 진행 중</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">실증 적용</span>
+                            <span class="info-value">사랑과선행 요양원 대상 테스트 예정</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">상용화</span>
+                            <span class="info-value">2025년 하반기</span>
+                        </div>
+                    </div>
+
+                    <!-- Technical Info -->
+                    <div class="sidebar-card">
+                        <h3 style="margin-bottom: 15px; color: #1e3c72;">기술 정보</h3>
+                        <div class="info-item">
+                            <span class="info-label">기술 분야</span>
+                            <span class="info-value">다목적 최적화</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">핵심 알고리즘</span>
+                            <span class="info-value">SPEA2 유전 알고리즘</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">목표 함수</span>
+                            <span class="info-value">4개 동시 최적화</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">개선율</span>
+                            <span class="info-value">평균 20-40%</span>
+                        </div>
+                    </div>
+
+                    <!-- Performance Metrics -->
+                    <div class="sidebar-card">
+                        <h3 style="margin-bottom: 15px; color: #1e3c72;">성능 지표</h3>
+                        <div class="info-item">
+                            <span class="info-label">처리 시간</span>
+                            <span class="info-value">30초~2분</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">최적해 개수</span>
+                            <span class="info-value">최대 5개</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">데이터 형식</span>
+                            <span class="info-value">Excel (.xlsx)</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">확장성</span>
+                            <span class="info-value">30일 식단 지원</span>
+                        </div>
+                    </div>
+
+                    <!-- Research Team -->
+                    <div class="sidebar-card">
+                        <h3 style="margin-bottom: 15px; color: #1e3c72;">연구진</h3>
+                        <div class="info-item">
+                            <span class="info-label">주관 기관</span>
+                            <span class="info-value">서울대학교</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">연구 책임자</span>
+                            <span class="info-value">이기원 교수</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">개발자</span>
+                            <span class="info-value">황희정</span>
+                        </div>
+                    </div>
+
+                    <!-- Related Algorithms -->
+                    <div class="sidebar-card">
+                        <h3 style="margin-bottom: 15px; color: #1e3c72;">관련 알고리즘</h3>
+                        <div style="display: flex; flex-direction: column; gap: 10px;">
+                            <a href="#" style="text-decoration: none; color: #2a5298; font-weight: 500;">🍱 맞춤형 도시락 설계</a>
+                            <a href="#" style="text-decoration: none; color: #2a5298; font-weight: 500;">👵 고령자 질환 및 저작단계 기반 식단 설계</a>
+                            <a href="#" style="text-decoration: none; color: #2a5298; font-weight: 500;">📅 구독형 식단 임상 실험 설계</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // 네비게이션 스크롤 효과
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // 모든 링크에서 active 클래스 제거
+                document.querySelectorAll('.nav-links a').forEach(l => l.classList.remove('active'));
+                
+                // 클릭된 링크에 active 클래스 추가
+                this.classList.add('active');
+                
+                // 해당 섹션으로 스크롤
+                const targetId = this.getAttribute('href').substring(1);
+                const targetSection = document.getElementById(targetId);
+                if (targetSection) {
+                    targetSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // 스크롤 시 네비게이션 업데이트
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.nav-links a');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').substring(1) === current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
